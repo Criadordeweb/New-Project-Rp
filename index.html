@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - New Project RP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Estilo do corpo da página */
+    body {
+      font-family: 'Bebas Neue', sans-serif;
+      background-color: #000000; /* Fundo preto */
+      color: #ffffff; /* Texto branco */
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Estilo do container */
+    .container {
+      background-color: #111111; /* Fundo levemente mais claro que o corpo */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Sombra branca sutil */
+      text-align: center;
+      width: 300px;
+    }
+
+    /* Títulos */
+    h1, h2 {
+      color: #ffffff; /* Títulos em branco */
+      font-size: 32px;
+    }
+
+    /* Estilo dos rótulos do formulário */
+    form label {
+      display: block;
+      margin: 10px 0 5px;
+      text-align: left;
+      color: #e0e0e0; /* Texto dos rótulos em branco acinzentado */
+    }
+
+    /* Estilo dos campos de entrada */
+    form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ffffff; /* Borda branca */
+      border-radius: 4px;
+      background-color: #000000; /* Fundo preto */
+      color: #ffffff; /* Texto branco */
+    }
+
+    /* Placeholder dos campos */
+    form input::placeholder {
+      color: #888888; /* Cinza para o texto de exemplo */
+    }
+
+    /* Estilo do botão */
+    button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ffffff; /* Borda branca */
+      border-radius: 4px;
+      background-color: #111111; /* Fundo levemente mais claro */
+      color: #ffffff; /* Texto branco */
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffffff; /* Fundo branco */
+      color: #000000; /* Texto preto */
+    }
+
+    /* Estilo para o link de login */
+    .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>New Project RP</h1>
+    <h2>Registro</h2>
+    <form id="registerForm">
+      <label for="username">Nome de Usuário</label>
+      <input type="text" id="username" name="username" placeholder="Digite seu nome de usuário" required>
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+      
+      <label for="password">Senha</label>
+      <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+      
+      <button type="submit">Registrar</button>
+    </form>
+    <a href="loginnew.html" class="login-link">Já tem uma conta? Faça login</a>
+  </div>
+
+  <!-- Carregar o script do Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  
+  <script>
+    // Aguardar o carregamento completo do script do Supabase
+    window.onload = function() {
+      // Inicializar o cliente do Supabase aqui
+      const SUPABASE_URL = "https://zwdcktjnhvtczdyctmsk.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3ZGNrdGpuaHZ0Y3pkeWN0bXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM4MTMyNjgsImV4cCI6MjA0OTM4OTI2OH0.OzZmftitguLz_nwaB0vTPOn66vOjT08OZ5fcSmujvSQ";
+      
+      // Correção: O script já fornece a variável supabase globalmente
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Captura do formulário
+      const registerForm = document.getElementById("registerForm");
+
+      // Manipulação do envio do formulário
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Impede o envio padrão do formulário
+
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          // Registrar usuário no Supabase
+          const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+          }, {
+            data: { username: username }
+          });
+
+          if (error) {
+            alert("Erro ao registrar: " + error.message);
+          } else {
+            alert("Usuário registrado com sucesso! Por favor, verifique seu email.");
+            window.location.href = "loginnew.html";
+          }
+        } catch (err) {
+          console.error("Erro ao registrar:", err);
+          alert("Ocorreu um erro inesperado. Tente novamente.");
+        }
+      });
+    };
+  </script>
+</body>
+</html>
