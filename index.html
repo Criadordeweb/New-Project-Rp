@@ -145,9 +145,8 @@
           const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
-            {
-  redirectTo:'https://criadordeweb.github.io/New-Project-Rp/'
-    }
+
+    
           }, {
             data: { username: username }
           });
